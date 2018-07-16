@@ -59,10 +59,16 @@ class User extends BaseEntity {
         return `${this.firstName} ${this.lastName}`;
     }
 
+    // 사용자가 비밀번호를 입력하면(12345)
+    // 이 비밀번호를 암호화 작업을 해서 리턴한다
     private hashPassword(password:string): Promise<string> {
         return bcrypt.hash(password, BCRYPT_ROUNDS );
     }
 
+    // 사용자가 입력한 비밀번호화 암호화된 비밀번호가 같은지 확인하는 작업이다.
+    public comparePassword(password:string): Promise<boolean> {
+        return bcrypt.compare(password, this.password)
+    }
 
     @CreateDateColumn() 
     createdAt: string;
@@ -70,6 +76,7 @@ class User extends BaseEntity {
     @UpdateDateColumn() 
     updatedAt: string;
 
+    // 비밀번호를 유저가 입력한 번호가 아닌 암호화된 글자로 만든다.
     @BeforeInsert()
     @BeforeUpdate()
     async savePassword(): Promise<void> {
