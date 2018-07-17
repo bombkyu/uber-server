@@ -20,3 +20,7 @@ type User {
     lastOrientation:Float
 
 }
+
+type Query {
+  user: User
+}
