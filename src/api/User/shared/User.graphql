@@ -5,6 +5,7 @@ type User {
     firstName:String!
     lastName:String!
     age:Int
+    fbId:String
     password:String
     phoneNumber: String
     verifiedPhoneNumber:Boolean!
