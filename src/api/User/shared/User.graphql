@@ -25,7 +25,3 @@ type User {
     ridesAsDriver:[Ride]
 
 }
-
-type Query {
-  user: User
-}
