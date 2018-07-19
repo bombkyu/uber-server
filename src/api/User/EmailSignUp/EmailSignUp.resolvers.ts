@@ -3,6 +3,7 @@ import { EmailSignInMutationArgs, EmailSignInResponse } from '../../../types/gra
 import { Resolvers } from "../../../types/resolvers";
 import createJWT from '../../../utils/createJWT';
 import Verification from '../../../entities/Verification';
+import { sendVerificationEmail } from '../../../utils/sendEmail';
 
 
 const resolvers:Resolvers = {
@@ -26,7 +27,11 @@ const resolvers:Resolvers = {
                        const emailVerification = await Verification.create({
                            payload:newUser.email,
                            target:"EMAIL"
-                       })
+                       }).save();
+                       await sendVerificationEmail(
+                           newUser.fullName,
+                           emailVerification.key
+                       )
                    }
                     const token = createJWT(newUser.id);
                     return {
