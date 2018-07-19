@@ -2,6 +2,7 @@ import { Resolvers } from "../../../types/resolvers";
 import privateResolver from "../../../utils/privateResolver";
 import { UpdateMyProfileMutationArgs, UpdateMyProfileResponse } from "../../../types/graph";
 import User from "../../../entities/User";
+import cleanNullArgs from "../../../utils/cleanNullArgs";
 
 const resolvers: Resolvers = {
 	Mutation: {
@@ -15,12 +16,7 @@ const resolvers: Resolvers = {
             // And We don't want to change it to null.
             // To prevent this, I created new objects that only takes not null arguments
             // And this notNull object will be passed to Update function.
-            const notNull = {};
-            Object.keys(args).forEach(key => {
-                if(args[key] !== null) {
-                    notNull[key] = args[key]
-                }
-            })
+            const notNull = cleanNullArgs(args);
 
             // Update a user profile.
             // update takes two argument
