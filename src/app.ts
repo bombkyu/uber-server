@@ -11,21 +11,27 @@ class App {
     public pubSub: any;
     
     constructor() {
-        // GraphQLSever를 생성하려면
-        // Schema, resolver가 있어야한다.
-        // If we define Context here then you can access request from all the resolvers.
-        // Context is something that goes to all the resolvers.
+        // pubSub is for Subscription.
+        // Subscription is a notification.
         this.pubSub = new PubSub();
         this.pubSub.ee.setMaxListeners(99);
-        this.app = new GraphQLServer({
+        
+        // GraphQLSever를 생성하려면
+        // Schema, resolver가 있어야한다.
+        
+        this.app = new GraphQLServer({ 
+            // We are making not just one big Schema and resolver.
+			// So we are going to merge all the schemas and resolvers and
+			// put it inside "schema" object.
             schema,
+
+            // If we define Context here then you can access request from all the resolvers.
+            // Context is something that goes to all the resolvers.
             context: req => {
-                return {
-                    req:req.request,
-                    pubSub:this.pubSub
-                }
-            }
+				return { req: req.request, pubSub: this.pubSub };
+            } 
         });
+        // We are using the middlewares that was defined in the bottom in GraphQL Server. 
         this.middlewares();
         
     }

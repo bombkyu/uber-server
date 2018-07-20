@@ -11,7 +11,11 @@ const resolvers: Resolvers = {
             const notNull = cleanNullArgs(args);
             try {
                 await User.update({id:user.id}, {...notNull});
+
+                // When User updates his location,
+                // User will send(Publish) a updated data to the driverUpdate channel
                 pubSub.publish("driverUpdate", {DriversSubscription:user})
+
                 return {
                     ok:true,
                     error:null
