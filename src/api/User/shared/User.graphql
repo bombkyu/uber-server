@@ -23,5 +23,6 @@ type User {
     messages:[Message]
     ridesAsPassenger:[Ride]
     ridesAsDriver:[Ride]
+    places:[Place]
 
 }

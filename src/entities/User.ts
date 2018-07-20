@@ -4,6 +4,7 @@ import { BaseEntity, BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entit
 import Chat from "./Chat";
 import Message from "./Message";
 import Ride from "./Ride";
+import Place from "./Place";
 
 const BCRYPT_ROUNDS = 10;
 
@@ -24,16 +25,16 @@ class User extends BaseEntity {
 	@Column({ type: 'text' })
 	lastName: string;
 
-	@Column({ type: 'int', nullable:true })
+	@Column({ type: 'int', nullable: true })
 	age: number;
 
-	@Column({ type: 'text', nullable:true })
+	@Column({ type: 'text', nullable: true })
 	password: string;
 
-	@Column({type:'text', nullable:true})
+	@Column({ type: 'text', nullable: true })
 	fbId: string;
 
-	@Column({ type: 'text', nullable:true })
+	@Column({ type: 'text', nullable: true })
 	phoneNumber: string;
 
 	@Column({ type: 'boolean', default: false })
@@ -71,6 +72,9 @@ class User extends BaseEntity {
 
 	@OneToMany(type => Ride, ride => ride.passenger)
 	ridesAsPassenger: Ride[];
+
+	@OneToMany(type => Place, place => place.user)
+	places: Place[];
 
 	get fullName(): string {
 		return `${this.firstName} ${this.lastName}`;
