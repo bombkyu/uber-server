@@ -28,7 +28,15 @@ class App {
             // If we define Context here then you can access request from all the resolvers.
             // Context is something that goes to all the resolvers.
             context: req => {
-				return { req: req.request, pubSub: this.pubSub };
+                // request(req) is from not only http request but also websocket request.
+                // That's why you can access to the currentUser from the subscription.
+                // console.log(req.connection.context.currentUser);
+                const {connection : {context = null} = {}} = req;
+				return { 
+                    req: req.request, 
+                    pubSub: this.pubSub,
+                    context 
+                };
             } 
         });
         // We are using the middlewares that was defined in the bottom in GraphQL Server. 
