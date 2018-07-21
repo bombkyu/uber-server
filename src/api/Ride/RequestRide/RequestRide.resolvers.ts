@@ -6,10 +6,11 @@ import Ride from "../../../entities/Ride";
 
 const resolvers:Resolvers = {
     Mutation : {
-        RequestRide:privateResolver (async (_,args:RequestRideMutationArgs, {req}) : Promise<RequestRideResponse> => {
+        RequestRide:privateResolver (async (_,args:RequestRideMutationArgs, {req, pubSub}) : Promise<RequestRideResponse> => {
             const user:User = req.user;
             const ride = await Ride.create({...args, passenger:user}).save();
-            try {
+            pubSub.publish("rideRequest", {NearbySubscription : ride});
+            try {   
                 return {
                     ok:true,
                     error:null,
